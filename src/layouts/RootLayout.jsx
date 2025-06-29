@@ -1,12 +1,20 @@
 import React from "react";
 import NavBar from "../components/NavBar";
 import { Outlet } from "react-router";
+import { Toaster } from "react-hot-toast";
 
 function RootLayout() {
   return (
     <div className="font-poppins">
       <NavBar />
-      <Outlet />
+      <div className="bg-slate-950">
+        <Outlet />
+      </div>
+      <Toaster
+        position="top-center"
+        toastOptions={{ duration: 2000 }}
+        containerStyle={{ padding: "1rem", fontSize: "1.2rem" }}
+      />
     </div>
   );
 }

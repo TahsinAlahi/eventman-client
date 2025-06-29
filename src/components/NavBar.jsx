@@ -103,8 +103,8 @@ function NavBar() {
                     </NavLink>
                   </li>
                   <li>
-                    <NavLink to="/register" className={activeClass}>
-                      Register
+                    <NavLink to="/signup" className={activeClass}>
+                      Sign Up
                     </NavLink>
                   </li>
                 </>
