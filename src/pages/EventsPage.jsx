@@ -5,14 +5,29 @@ import { useQuery } from "@tanstack/react-query";
 import { IoSearch } from "react-icons/io5";
 import Loader from "../components/Loader";
 import EventCard from "../components/EventCard";
+import getDateRange from "../utils/getDateRange";
 
 function EventsPage() {
   const axiosSecure = useAxiosSecure();
   const [searchQuery, setSearchQuery] = useState("");
-  const [category, setCategory] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all");
+
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["events"],
     queryFn: async () => {
+      if (searchQuery) {
+        const res = await axiosSecure.get(`/events/search?q=${searchQuery}`);
+        return res.data.data;
+      }
+
+      const { startDate, endDate } = getDateRange(dateFilter);
+      if (startDate && endDate) {
+        const res = await axiosSecure.get(
+          `/events/filter?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`
+        );
+        return res.data.data;
+      }
+
       const res = await axiosSecure.get("/events");
       return res.data.data;
     },
@@ -20,17 +35,6 @@ function EventsPage() {
 
   if (isLoading) return <Loader />;
   // if (error) return <DataErrorPage />;
-
-  // const filteredEvents = data.filter((event) => {
-  //   const isTitleMatch = event.title
-  //     .toLowerCase()
-  //     .includes(searchQuery.toLowerCase());
-  //   const isCategoryMatch =
-  //     category === "all" ||
-  //     event.category.toLowerCase().includes(category.toLowerCase());
-
-  //   return isTitleMatch && isCategoryMatch;
-  // });
 
   return (
     <div className="w-full min-h-screen text-white">
@@ -42,7 +46,7 @@ function EventsPage() {
         <div className="flex items-center bg-accent px-3 py-2 rounded-sm border border-border mt-3 gap-3 flex-col md:flex-row">
           <div className="flex items-center gap-0 w-full">
             <label className="pr-3" htmlFor="searchEvent">
-              <IoSearch siz e={20} />
+              <IoSearch size={20} />
             </label>
 
             <input
@@ -53,6 +57,24 @@ function EventsPage() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
+          <div className="mt-3 lg:mt-0">
+            <select
+              className="border border-primary px-2 py-1 rounded-md text-inherit"
+              onChange={(e) => setDateFilter(e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="thisWeek">This Week</option>
+              <option value="lastWeek">Last Week</option>
+              <option value="thisMonth">This Month</option>
+              <option value="lastMonth">Last Month</option>
+            </select>
+          </div>
+          <button
+            className="bg-primary px-2 py-1 rounded-lg cursor-pointer"
+            onClick={refetch}
+          >
+            Search
+          </button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full">
