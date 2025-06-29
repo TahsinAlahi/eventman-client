@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import EventsPage from "./pages/EventsPage";
 import CreateEventPage from "./pages/AddEventPage";
 import MyEventsPage from "./pages/MyEventsPage";
+import UpdateEventPage from "./pages/UpdateEventPage";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
         path: "/my-events",
         Component: MyEventsPage,
       },
+      { path: "/update/:eventId", Component: UpdateEventPage },
     ],
   },
 ]);

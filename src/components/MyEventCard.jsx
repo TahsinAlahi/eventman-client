@@ -1,12 +1,6 @@
-import { useNavigate } from "react-router";
+import { Link } from "react-router";
 
 function MyEventCard({ event }) {
-  const navigate = useNavigate();
-
-  function handleUpdate() {
-    navigate(`/dashboard/events/update/${event._id}`);
-  }
-
   return (
     <div className="bg-white shadow-md rounded-lg p-4 w-full max-w-md border border-gray-300 flex items-center justify-between flex-col">
       <div className="w-full">
@@ -29,12 +23,12 @@ function MyEventCard({ event }) {
         </p>
       </div>
 
-      <button
-        onClick={handleUpdate}
-        className="bg-purple-800 font-semibold text-white px-4 py-2 rounded mt-5 w-full hover:bg-purple-700 transition-all duration-200"
+      <Link
+        className="bg-purple-800 font-semibold text-white px-4 py-2 rounded mt-5 w-full hover:bg-purple-700 transition-all duration-200 text-center"
+        to={`/update/${event._id}`}
       >
         Update Event
-      </button>
+      </Link>
     </div>
   );
 }

@@ -7,6 +7,7 @@ import MyEventCard from "../components/MyEventCard";
 function MyEventsPage() {
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
+  
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["my-events", user?._id],
@@ -33,7 +34,7 @@ function MyEventsPage() {
             You haven’t created any events yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full cursor-pointer">
             {data.map((event) => (
               <MyEventCard event={event} key={event._id} />
             ))}
