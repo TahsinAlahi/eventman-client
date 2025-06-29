@@ -112,7 +112,7 @@ function NavBar() {
                 <li>
                   <button
                     onClick={logout}
-                    className="lg:hidden font-semibold text-red-400 hover:border-red-600 mt-2"
+                    className="lg:hidden font-semibold text-red-400 hover:border-red-600 mt-2 cursor-pointer"
                   >
                     Logout
                   </button>

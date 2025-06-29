@@ -16,14 +16,17 @@ function HomePage() {
         <div className="max-w-xl mx-auto flex items-center justify-center flex-col text-white p-8 h-min ">
           <div className="text-center space-y-6">
             <h1 className="md:text-4xl text-2xl font-bold font-rubik">
-              Welcome to HandsOn
+              Welcome to EventMan
             </h1>
-            <p className="text-lg font-poppins">
-              Connect, volunteer, and make an impact—because changing the world
-              starts with a helping hand! 🌍💙
+            <p class="text-lg w-11/12 mx-auto px-3 font-poppins text-center">
+              <strong>
+                Explore exciting events, grow your network, and make every
+                moment count! 🎉📅
+              </strong>
               <br />
-              Discover meaningful opportunities, lend your skills, and be part
-              of a community that cares. 🤝✨
+              From <em>workshops</em> to <em>community drives</em>—find, join,
+              and be part of something bigger.{" "}
+              <span class="inline-block">🌟🙌</span>
             </p>
           </div>
 
@@ -32,15 +35,9 @@ function HomePage() {
               <>
                 <Link
                   to="/events"
-                  className="font-semibold bg-accent text-black hover:bg-secondary hover:text-white px-5 py-2 rounded-lg transition duration-300"
+                  className="font-semibold text-white bg-slate-950 hover:bg-secondary hover:bg-white hover:text-slate-950 px-5 py-2 transition duration-300 "
                 >
                   Events
-                </Link>
-                <Link
-                  to="/help-requests"
-                  className="font-semibold bg-accent text-black hover:bg-secondary hover:text-white px-5 py-2 rounded-lg transition duration-300"
-                >
-                  Help Requests
                 </Link>
               </>
             ) : (
