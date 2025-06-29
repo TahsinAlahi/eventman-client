@@ -42,13 +42,14 @@ function AuthProvider({ children }) {
   async function login(email, password) {
     try {
       const res = await axiosPublic.post("/auth/login", { email, password });
-      console.log(res);
+
       if (res.status === 200) {
+        const data = res.data.data;
         setUser({
-          name: res.data.name,
-          email: res.data.email,
-          _id: res.data._id,
-          photoURL: res.data.photoURL,
+          name: data.name,
+          email: data.email,
+          _id: data._id,
+          photoURL: data.photoURL,
         });
         toast.success("Login successful");
         return { status: "success" };
@@ -89,7 +90,7 @@ function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    setIsAuthLoading(true);
+    // setIsAuthLoading(true);
     if (user) {
       localStorage.setItem("user", JSON.stringify(user));
     } else {
