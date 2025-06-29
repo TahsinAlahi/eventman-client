@@ -3,7 +3,7 @@ import useAxiosPublic from "../hooks/useAxiosPublic";
 import { toast } from "react-hot-toast";
 import Loader from "../components/Loader";
 
-const authContext = createContext(null);
+const AuthContext = createContext(null);
 
 function AuthProvider({ children }) {
   const axiosPublic = useAxiosPublic();
@@ -44,12 +44,8 @@ function AuthProvider({ children }) {
 
   async function login(email, password) {
     setIsAuthLoading(true);
-
     try {
-      const res = await axiosPublic.post("/auth/login", {
-        email,
-        password,
-      });
+      const res = await axiosPublic.post("/auth/login", { email, password });
       if (res.status === 200) {
         setUser({
           name: res.data.name,
@@ -57,7 +53,6 @@ function AuthProvider({ children }) {
           _id: res.data._id,
           photoURL: res.data.photoURL,
         });
-
         toast.success("Login successful");
         return { status: "success" };
       }
@@ -75,6 +70,8 @@ function AuthProvider({ children }) {
         toast.error("Something went wrong");
         return { status: "error", message: "Something went wrong" };
       }
+    } finally {
+      setIsAuthLoading(false);
     }
   }
 
@@ -88,14 +85,14 @@ function AuthProvider({ children }) {
         toast.success("Logout successful");
         return { status: "success" };
       }
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error("Something went wrong");
       return { status: "error", message: "Something went wrong" };
+    } finally {
+      setIsAuthLoading(false);
     }
   }
 
-  // set user in localstorage
   useEffect(() => {
     setIsAuthLoading(true);
     if (user) {
@@ -109,15 +106,15 @@ function AuthProvider({ children }) {
   if (isAuthLoading) return <Loader />;
 
   const value = { signup, isAuthLoading, login, user, logout };
-  return <authContext.Provider value={value}>{children}</authContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export default AuthProvider;
 
 export function useAuth() {
-  const context = useContext(authContext);
-  if (context === undefined)
-    throw new Error("useAuth must be used within a AuthProvider");
-
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 }
