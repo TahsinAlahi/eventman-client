@@ -12,8 +12,8 @@ function NavBar() {
   }
 
   function activeClass({ isActive }) {
-    return `block py-2 px-3 font-semibold border-b-2 border-transparent text-inherit hover:border-white ${
-      isActive ? "border-white" : ""
+    return `block py-2 px-3 font-semibold border-b-2 border-transparent text-black hover:border-white bg-white/40 ${
+      isActive ? "border-white bg-white/80 text-slate-950" : "text-white"
     }`;
   }
 
@@ -60,10 +60,10 @@ function NavBar() {
           <div
             className={`${
               isMenuOpen ? "block" : "hidden"
-            } w-full lg:w-auto lg:flex lg:justify-end absolute lg:static top-full z-50 bg-slate-950 p-4 lg:border-0 right-0 left-0 lg:py-0 lg:px-0 lg:bg-transparent bg-slate-950`}
+            } w-full lg:w-auto lg:flex lg:justify-end absolute lg:static top-full z-50 bg-slate-950 p-4 lg:border-0 right-0 left-0 lg:py-0 lg:px-0 lg:bg-transparent`}
           >
             <ul
-              className="font-medium flex flex-col lg:flex-row p-4 mt-4 border rounded-lg bg-slate-950 lg:border-0 text-center"
+              className="font-medium flex flex-col lg:flex-row p-4 mt-4 border rounded-lg bg-slate-950 lg:border-0 text-center lg:space-x-2"
               onClick={toggleMenu}
             >
               {/* Public Links */}
