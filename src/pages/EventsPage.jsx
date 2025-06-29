@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
 // import DataErrorPage from "../components/DataErrorPage";
-// import EventCard from "../components/EventCard";
 import { IoSearch } from "react-icons/io5";
 import Loader from "../components/Loader";
+import EventCard from "../components/EventCard";
 
 function EventsPage() {
   const axiosSecure = useAxiosSecure();
@@ -14,8 +14,7 @@ function EventsPage() {
     queryKey: ["events"],
     queryFn: async () => {
       const res = await axiosSecure.get("/events");
-      console.log(res.data);
-      return res.data;
+      return res.data.data;
     },
   });
 
@@ -57,9 +56,9 @@ function EventsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full">
-          {/* {filteredEvents.map((event) => (
+          {data.map((event) => (
             <EventCard event={event} key={event._id} refetch={refetch} />
-          ))} */}
+          ))}
         </div>
       </main>
     </div>
