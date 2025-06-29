@@ -14,7 +14,6 @@ function AuthProvider({ children }) {
   });
 
   async function signup(name, email, password, photoURL) {
-    setIsAuthLoading(true);
     try {
       const res = await axiosPublic.post("/auth/register", {
         name,
@@ -37,15 +36,13 @@ function AuthProvider({ children }) {
         toast.error("Something went wrong");
         return { status: "error", message: "Something went wrong" };
       }
-    } finally {
-      setIsAuthLoading(false);
     }
   }
 
   async function login(email, password) {
-    setIsAuthLoading(true);
     try {
       const res = await axiosPublic.post("/auth/login", { email, password });
+      console.log(res);
       if (res.status === 200) {
         setUser({
           name: res.data.name,
@@ -70,8 +67,6 @@ function AuthProvider({ children }) {
         toast.error("Something went wrong");
         return { status: "error", message: "Something went wrong" };
       }
-    } finally {
-      setIsAuthLoading(false);
     }
   }
 

@@ -17,6 +17,7 @@ function passwordValidator(password) {
 
 function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSigningUp, setIsSigningUp] = useState(false);
 
   const {
     register,
@@ -34,12 +35,14 @@ function SignupPage() {
       return;
     }
 
+    setIsSigningUp(true);
     const res = await signup(
       data.name,
       data.email,
       data.password,
       data.photoURL
     );
+    setIsSigningUp(false);
 
     if (res.status === "success") navigate(state?.from || "/events");
   }
