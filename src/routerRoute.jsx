@@ -8,6 +8,7 @@ import CreateEventPage from "./pages/AddEventPage";
 import MyEventsPage from "./pages/MyEventsPage";
 import UpdateEventPage from "./pages/UpdateEventPage";
 import PrivateRoute from "./components/PrivateRoute";
+import ErrorPage from "./pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
         ),
       },
     ],
+  },
+  {
+    path: "*",
+    Component: ErrorPage,
   },
 ]);
 
