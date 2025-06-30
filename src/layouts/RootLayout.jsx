@@ -7,7 +7,7 @@ function RootLayout() {
   return (
     <div className="font-poppins">
       <NavBar />
-      <div className="bg-black">
+      <div className="bg-black overflow-hidden">
         <Outlet />
       </div>
       <Toaster

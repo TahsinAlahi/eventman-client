@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQuery } from "@tanstack/react-query";
-// import DataErrorPage from "../components/DataErrorPage";
+import DataError from "../components/DataError";
 import { IoSearch } from "react-icons/io5";
 import Loader from "../components/Loader";
 import EventCard from "../components/EventCard";
@@ -34,7 +34,7 @@ function EventsPage() {
   });
 
   if (isLoading) return <Loader />;
-  // if (error) return <DataErrorPage />;
+  if (error) return <DataError />;
 
   return (
     <div className="w-full min-h-screen text-neutral-300 bg-black">

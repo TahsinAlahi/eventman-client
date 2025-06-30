@@ -20,7 +20,7 @@ function MyEventsPage() {
   });
 
   if (isLoading) return <Loader />;
-  // if (error) return <DataErrorPage />;
+  if (error) return <DataError />;
 
   return (
     <div className="w-full min-h-screen text-white">
