@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useAuth } from "../providers/AuthProvider";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
-import ShinyText from "../components/ShinyText";
+import ShinyText from "../ui/ShinyText";
 import { motion } from "framer-motion";
 
 function passwordValidator(password) {

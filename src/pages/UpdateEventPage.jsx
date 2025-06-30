@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router";
 import { toast } from "react-hot-toast";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import { useQueryClient } from "@tanstack/react-query";
+import ShinyText from "../ui/ShinyText";
 
 function UpdateEventPage() {
   const { eventId: id } = useParams();
@@ -25,8 +26,6 @@ function UpdateEventPage() {
       try {
         const res = await axiosSecure.get(`/events/${id}`);
         const event = res.data.data;
-
-        console.log(event);
 
         if (event) {
           const date = new Date(event.dateTime);
@@ -75,10 +74,13 @@ function UpdateEventPage() {
   }
 
   return (
-    <main className="bg-slate-950 text-white min-h-screen max-w-screen-xl mx-auto py-10 px-4 font-poppins">
-      <h1 className="text-3xl font-semibold border-b-2 border-white text-center w-fit mx-auto pb-1 mb-10 font-rubik">
-        Update Event
-      </h1>
+    <main className="text-neutral-300 min-h-screen max-w-screen-xl mx-auto py-10 px-4 font-poppins flex flex-col justify-center items-center">
+      <ShinyText
+        text="Update Event"
+        disabled={false}
+        speed={2}
+        className="text-3xl font-semibold text-center w-fit mx-auto pb-1 mb-10 font-rubik"
+      />
 
       <form
         className="w-full max-w-2xl mx-auto space-y-6"
@@ -86,10 +88,10 @@ function UpdateEventPage() {
       >
         {/* Title */}
         <div>
-          <label className="block mb-1 font-semibold">Title</label>
+          <label className="block mb-1 font-semibold text-sm">Title</label>
           <input
             {...register("title", { required: "Title is required" })}
-            className="w-full px-4 py-2 rounded-md bg-slate-800 border border-gray-500 outline-none"
+            className="w-full px-4 py-2 bg-neutral-800 border border-gray-500 outline-none"
           />
           {errors.title && (
             <p className="text-red-400 text-sm mt-1">{errors.title.message}</p>
@@ -98,13 +100,13 @@ function UpdateEventPage() {
 
         {/* Description */}
         <div>
-          <label className="block mb-1 font-semibold">Description</label>
+          <label className="block mb-1 font-semibold text-sm">Description</label>
           <textarea
             {...register("description", {
               required: "Description is required",
             })}
             rows={4}
-            className="w-full px-4 py-2 rounded-md bg-slate-800 border border-gray-500 outline-none"
+            className="w-full px-4 py-2 bg-neutral-800 border border-gray-500 outline-none"
           />
           {errors.description && (
             <p className="text-red-400 text-sm mt-1">
@@ -115,11 +117,11 @@ function UpdateEventPage() {
 
         {/* Date */}
         <div>
-          <label className="block mb-1 font-semibold">Date</label>
+          <label className="block mb-1 font-semibold text-sm">Date</label>
           <input
             type="date"
             {...register("date", { required: "Date is required" })}
-            className="w-full px-4 py-2 rounded-md bg-slate-800 border border-gray-500 outline-none"
+            className="w-full px-4 py-2 bg-neutral-800 border border-gray-500 outline-none"
           />
           {errors.date && (
             <p className="text-red-400 text-sm mt-1">{errors.date.message}</p>
@@ -128,11 +130,11 @@ function UpdateEventPage() {
 
         {/* Time */}
         <div>
-          <label className="block mb-1 font-semibold">Time</label>
+          <label className="block mb-1 font-semibold text-sm">Time</label>
           <input
             type="time"
             {...register("fromTime", { required: "Time is required" })}
-            className="w-full px-4 py-2 rounded-md bg-slate-800 border border-gray-500 outline-none"
+            className="w-full px-4 py-2 bg-neutral-800 border border-gray-500 outline-none"
           />
           {errors.fromTime && (
             <p className="text-red-400 text-sm mt-1">
@@ -143,10 +145,10 @@ function UpdateEventPage() {
 
         {/* Location */}
         <div>
-          <label className="block mb-1 font-semibold">Event Location</label>
+          <label className="block mb-1 font-semibold text-sm">Event Location</label>
           <input
             {...register("location", { required: "Location is required" })}
-            className="w-full px-4 py-2 rounded-md bg-slate-800 border border-gray-500 outline-none"
+            className="w-full px-4 py-2 bg-neutral-800 border border-gray-500 outline-none"
           />
           {errors.location && (
             <p className="text-red-400 text-sm mt-1">
@@ -157,7 +159,7 @@ function UpdateEventPage() {
 
         <button
           type="submit"
-          className="w-full bg-purple-700 hover:bg-purple-600 transition-all text-white font-semibold py-2 rounded-lg cursor-pointer"
+          className="w-full bg-neutral-700 hover:bg-neutral-600 transition-all text-neutral-300 font-semibold py-2 cursor-pointer"
           disabled={isUpdating}
         >
           {isUpdating ? "Updating..." : "Update Event"}
