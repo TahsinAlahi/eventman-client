@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useAuth } from "../providers/AuthProvider";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
+import ShinyText from "../components/ShinyText";
+import { motion } from "framer-motion";
 
-// Validate Password
 function passwordValidator(password) {
   const minLength = 6;
   const hasUppercase = /[A-Z]/.test(password);
@@ -14,6 +15,32 @@ function passwordValidator(password) {
 
   return isLongEnough && hasUppercase && hasLowercase;
 }
+
+const containerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.03,
+      when: "beforeChildren",
+      ease: "easeOut",
+      duration: 0.3,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 10 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.3,
+      ease: "easeOut",
+    },
+  },
+};
 
 function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -48,108 +75,126 @@ function SignupPage() {
   }
 
   return (
-    <main className="bg-slate-950 min-h-screen max-w-screen-xl mx-auto text-white font-poppins py-10">
-      <h1 className="text-3xl border-b-2 border-white mx-auto text-center w-fit pb-1 mb-10 font-rubik">
-        Sign Up
-      </h1>
+    <motion.main
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="w-full md:w-2/3 lg:w-1/3 mx-auto text-neutral-300 font-poppins my-5 py-6 px-4 justify-center items-center flex flex-col"
+    >
+      <motion.div variants={itemVariants} className="mb-5">
+        <ShinyText
+          text="Sign Up"
+          disabled={false}
+          speed={2}
+          className="text-3xl mx-auto text-center w-fit pb-2 font-rubik"
+        />
+      </motion.div>
 
-      <div className="w-11/12 md:w-2/5 mx-auto flex flex-col items-center justify-center">
-        <form
-          className="w-full space-y-4"
-          onSubmit={handleSubmit(handleRegister)}
+      <motion.form
+        variants={containerVariants}
+        className="w-full space-y-4"
+        onSubmit={handleSubmit(handleRegister)}
+      >
+        {/* Name */}
+        <motion.div variants={itemVariants} className="flex flex-col gap-1">
+          <label htmlFor="name" className="font-semibold text-sm">
+            Full Name
+          </label>
+          <input
+            type="text"
+            id="name"
+            {...register("name", {
+              required: "Name is required",
+            })}
+            className="w-full px-3 py-2 text-neutral-300 outline-none rounded-md border border-neutral-600 focus:border-neutral-400 shadow-md bg-transparent"
+          />
+          {errors.name && (
+            <p className="text-red-400 text-sm">{errors.name.message}</p>
+          )}
+        </motion.div>
+
+        {/* Email */}
+        <motion.div variants={itemVariants} className="flex flex-col gap-1">
+          <label htmlFor="email" className="font-semibold text-sm">
+            Email
+          </label>
+          <input
+            type="email"
+            id="email"
+            {...register("email", { required: "Email is required" })}
+            className="w-full px-3 py-2 text-neutral-300 outline-none rounded-md border border-neutral-600 focus:border-neutral-400 shadow-md bg-transparent"
+          />
+          {errors.email && (
+            <p className="text-red-400 text-sm">{errors.email.message}</p>
+          )}
+        </motion.div>
+
+        {/* Photo URL */}
+        <motion.div variants={itemVariants} className="flex flex-col gap-1">
+          <label htmlFor="photoURL" className="font-semibold text-sm">
+            Photo URL
+          </label>
+          <input
+            type="url"
+            id="photoURL"
+            {...register("photoURL", { required: "Photo URL is required" })}
+            className="w-full px-3 py-2 text-neutral-300 outline-none rounded-md border border-neutral-600 focus:border-neutral-400 shadow-md bg-transparent"
+          />
+          {errors.photoURL && (
+            <p className="text-red-400 text-sm">{errors.photoURL.message}</p>
+          )}
+        </motion.div>
+
+        {/* Password */}
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col gap-1 relative"
         >
-          {/* Name */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="name" className="font-semibold text-lg">
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              {...register("name", {
-                required: "Name is required",
-              })}
-              className="px-3 py-2 text-white outline-none rounded-md border border-gray-400 shadow-md"
-            />
-            {errors.name && (
-              <p className="text-red-400 text-sm">{errors.name.message}</p>
-            )}
-          </div>
-
-          {/* Email */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="email" className="font-semibold text-lg">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              {...register("email", { required: "Email is required" })}
-              className="px-3 py-2 text-white outline-none rounded-md border border-gray-400 shadow-md"
-            />
-            {errors.email && (
-              <p className="text-red-400 text-sm">{errors.email.message}</p>
-            )}
-          </div>
-
-          {/* Photo URL */}
-          <div className="flex flex-col gap-1">
-            <label htmlFor="photoURL" className="font-semibold text-lg">
-              Photo URL
-            </label>
-            <input
-              type="url"
-              id="photoURL"
-              {...register("photoURL", { required: "Photo URL is required" })}
-              className="px-3 py-2 text-white outline-none rounded-md border border-gray-400 shadow-md"
-            />
-            {errors.photoURL && (
-              <p className="text-red-400 text-sm">{errors.photoURL.message}</p>
-            )}
-          </div>
-
-          {/* Password */}
-          <div className="flex flex-col gap-1 relative">
-            <label htmlFor="password" className="font-semibold text-lg">
-              Password
-            </label>
-            <div
-              className="absolute right-3 bottom-3 text-white cursor-pointer"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <IoMdEye className="text-xl" />
-              ) : (
-                <IoMdEyeOff className="text-xl" />
-              )}
-            </div>
-            <input
-              type={showPassword ? "text" : "password"}
-              id="password"
-              {...register("password", { required: "Password is required" })}
-              className="px-3 py-2 text-white outline-none rounded-md border border-gray-400 shadow-md"
-            />
-            {errors.password && (
-              <p className="text-red-400 text-sm">{errors.password.message}</p>
-            )}
-          </div>
-
-          <button className="w-full px-3 py-2 rounded-md bg-purple-900 text-white font-semibold hover:bg-purple-700 transition-all duration-200 my-5">
-            Sign Up
-          </button>
-        </form>
-
-        <h3 className="mt-4 text-sm">
-          Already have an account?{" "}
-          <Link
-            to="/login"
-            className="text-purple-400 hover:border-purple-500 border-b-2 border-transparent transition-all duration-200 font-semibold"
+          <label htmlFor="password" className="font-semibold text-sm">
+            Password
+          </label>
+          <div
+            className="absolute right-3 bottom-3 text-neutral-300 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
           >
-            Login
-          </Link>
-        </h3>
-      </div>
-    </main>
+            {showPassword ? (
+              <IoMdEye className="text-xl" />
+            ) : (
+              <IoMdEyeOff className="text-xl" />
+            )}
+          </div>
+          <input
+            type={showPassword ? "text" : "password"}
+            id="password"
+            {...register("password", { required: "Password is required" })}
+            className="w-full px-3 py-2 text-neutral-300 outline-none rounded-md border border-neutral-600 focus:border-neutral-400 shadow-md bg-transparent"
+          />
+          {errors.password && (
+            <p className="text-red-400 text-sm">{errors.password.message}</p>
+          )}
+        </motion.div>
+
+        {/* Submit Button */}
+        <motion.button
+          variants={itemVariants}
+          type="submit"
+          className="w-full px-3 py-2 rounded-md bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50"
+          disabled={isSigningUp}
+        >
+          {isSigningUp ? "Signing up..." : "Sign Up"}
+        </motion.button>
+      </motion.form>
+
+      <motion.h3 variants={itemVariants} className="mt-4 text-sm text-center">
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          className="text-neutral-600 hover:border-neutral-500 border-b-2 border-transparent transition-all duration-200 font-semibold"
+        >
+          Login
+        </Link>
+      </motion.h3>
+    </motion.main>
   );
 }
 
