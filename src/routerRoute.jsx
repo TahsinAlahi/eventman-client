@@ -7,6 +7,7 @@ import EventsPage from "./pages/EventsPage";
 import CreateEventPage from "./pages/AddEventPage";
 import MyEventsPage from "./pages/MyEventsPage";
 import UpdateEventPage from "./pages/UpdateEventPage";
+import PrivateRoute from "./components/PrivateRoute";
 
 const router = createBrowserRouter([
   {
@@ -27,17 +28,36 @@ const router = createBrowserRouter([
       },
       {
         path: "/events",
-        Component: EventsPage,
+        element: (
+          <PrivateRoute>
+            <EventsPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/add-event",
-        Component: CreateEventPage,
+        element: (
+          <PrivateRoute>
+            <CreateEventPage />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my-events",
-        Component: MyEventsPage,
+        element: (
+          <PrivateRoute>
+            <MyEventsPage />
+          </PrivateRoute>
+        ),
       },
-      { path: "/update/:eventId", Component: UpdateEventPage },
+      {
+        path: "/update/:eventId",
+        element: (
+          <PrivateRoute>
+            <UpdateEventPage />
+          </PrivateRoute>
+        ),
+      },
     ],
   },
 ]);

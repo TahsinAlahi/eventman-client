@@ -1,5 +1,4 @@
 import React from "react";
-import "./Loader.css"; // Make sure this file exists!
 
 export default function Loader() {
   const squares = [
