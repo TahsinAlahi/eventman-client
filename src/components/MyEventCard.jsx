@@ -32,20 +32,6 @@ function MyEventCard({ event }) {
         try {
           const res = await axiosSecure.delete(`/events/${event._id}`);
           if (res.status === 200) {
-            await Swal.fire({
-              title: "Deleted!",
-              text: "Your event has been removed 🧹",
-              icon: "success",
-              iconColor: "#10b981",
-              background: "#1e293b",
-              color: "#f8fafc",
-              confirmButtonColor: "#10b981",
-              customClass: {
-                popup: "rounded-xl shadow-md",
-                title: "text-lg font-semibold",
-                confirmButton: "px-4 py-2",
-              },
-            });
             toast.success("Event deleted successfully");
             queryClient.invalidateQueries(["my-events"]);
           }

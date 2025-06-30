@@ -5,17 +5,18 @@ import { toast } from "react-hot-toast";
 import { useAuth } from "../providers/AuthProvider";
 import useAxiosSecure from "../hooks/useAxiosSecure";
 import ShinyText from "../ui/ShinyText";
+import { useQueryClient } from "@tanstack/react-query";
 
 function CreateEventPage() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm();
   const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   async function onSubmit(data) {
     try {
@@ -35,7 +36,8 @@ function CreateEventPage() {
 
       if (res.status === 201) {
         toast.success("Event created successfully!");
-        reset();
+        queryClient.invalidateQueries(["my-events"]);
+        queryClient.invalidateQueries(["events"]);
         navigate("/events");
       }
     } catch (error) {
