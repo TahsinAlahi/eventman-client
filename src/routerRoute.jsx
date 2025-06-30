@@ -1,35 +1,43 @@
 import { createBrowserRouter } from "react-router";
-import RootLayout from "./layouts/RootLayout";
-import HomePage from "./pages/HomePage";
-import SignupPage from "./pages/SignupPage";
-import LoginPage from "./pages/LoginPage";
-import EventsPage from "./pages/EventsPage";
-import CreateEventPage from "./pages/AddEventPage";
-import MyEventsPage from "./pages/MyEventsPage";
-import UpdateEventPage from "./pages/UpdateEventPage";
+import { lazy, Suspense } from "react";
+import Loader from "./components/Loader";
 import PrivateRoute from "./components/PrivateRoute";
-import ErrorPage from "./pages/ErrorPage";
+
+// Lazy-loaded pages
+const RootLayout = lazy(() => import("./layouts/RootLayout"));
+const HomePage = lazy(() => import("./pages/HomePage"));
+const SignupPage = lazy(() => import("./pages/SignupPage"));
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const EventsPage = lazy(() => import("./pages/EventsPage"));
+const CreateEventPage = lazy(() => import("./pages/AddEventPage"));
+const MyEventsPage = lazy(() => import("./pages/MyEventsPage"));
+const UpdateEventPage = lazy(() => import("./pages/UpdateEventPage"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+
+function withSuspense(Component) {
+  return <Suspense fallback={<Loader />}>{Component}</Suspense>;
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    Component: RootLayout,
+    element: withSuspense(<RootLayout />),
     children: [
       {
         path: "/",
-        Component: HomePage,
+        element: withSuspense(<HomePage />),
       },
       {
         path: "/signup",
-        Component: SignupPage,
+        element: withSuspense(<SignupPage />),
       },
       {
         path: "/login",
-        Component: LoginPage,
+        element: withSuspense(<LoginPage />),
       },
       {
         path: "/events",
-        element: (
+        element: withSuspense(
           <PrivateRoute>
             <EventsPage />
           </PrivateRoute>
@@ -37,7 +45,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-event",
-        element: (
+        element: withSuspense(
           <PrivateRoute>
             <CreateEventPage />
           </PrivateRoute>
@@ -45,7 +53,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/my-events",
-        element: (
+        element: withSuspense(
           <PrivateRoute>
             <MyEventsPage />
           </PrivateRoute>
@@ -53,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/update/:eventId",
-        element: (
+        element: withSuspense(
           <PrivateRoute>
             <UpdateEventPage />
           </PrivateRoute>
@@ -63,7 +71,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    Component: ErrorPage,
+    element: withSuspense(<ErrorPage />),
   },
 ]);
 
