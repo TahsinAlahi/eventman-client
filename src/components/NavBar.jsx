@@ -1,29 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, NavLink } from "react-router";
 import { FaCalendarCheck } from "react-icons/fa6";
 import { useAuth } from "../providers/AuthProvider";
 
 function NavBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const { user, logout } = useAuth();
+  const userMenuRef = useRef(null);
 
   function toggleMenu() {
     setIsMenuOpen(!isMenuOpen);
   }
 
+  function toggleUserMenu() {
+    setIsUserMenuOpen(!isUserMenuOpen);
+  }
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   function activeClass({ isActive }) {
-    return `block py-2 px-3 font-semibold border-b-2 border-transparent text-black hover:border-white bg-white/40 ${
-      isActive ? "border-white bg-white/80 text-slate-950" : "text-white"
-    }`;
+    return `nav-link relative block py-2 px-3 font-semibold
+      text-neutral-300 transition-all duration-500 ease-in-out
+      ${isActive ? "active" : ""}`;
   }
 
   return (
-    <div className="w-full bg-slate-950">
+    <div className="w-full bg-neutral-950">
       <nav className="w-full font-nunito text-white relative">
         <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-2 md:px-7">
           <Link to="/" className="flex items-center space-x-3">
             <div
-              className="h-10 aspect-square overflow-hidden  rounded-full flex justify-center items-center"
+              className="h-10 aspect-square overflow-hidden rounded-full flex justify-center items-center"
               style={{ color: "#fff" }}
             >
               <FaCalendarCheck className="text-3xl text-white" />
@@ -33,7 +51,6 @@ function NavBar() {
             </span>
           </Link>
 
-          {/* Mobile menu toggle */}
           <button
             onClick={toggleMenu}
             type="button"
@@ -56,17 +73,15 @@ function NavBar() {
             </svg>
           </button>
 
-          {/* Navigation Links */}
           <div
             className={`${
               isMenuOpen ? "block" : "hidden"
-            } w-full lg:w-auto lg:flex lg:justify-end absolute lg:static top-full z-50 bg-slate-950 p-4 lg:border-0 right-0 left-0 lg:py-0 lg:px-0 lg:bg-transparent`}
+            } w-full lg:w-auto lg:flex lg:justify-end absolute lg:static top-full z-50 bg-neutral-950 p-4 lg:border-0 right-0 left-0 lg:py-0 lg:px-0 lg:bg-transparent`}
           >
             <ul
-              className="font-medium flex flex-col lg:flex-row p-4 mt-4 border rounded-lg bg-slate-950 lg:border-0 text-center lg:space-x-2"
+              className="font-medium flex flex-col lg:flex-row p-4 mt-4 border rounded-lg bg-neutral-950 lg:border-0 text-center lg:space-x-2"
               onClick={toggleMenu}
             >
-              {/* Public Links */}
               <li>
                 <NavLink to="/" className={activeClass}>
                   Home
@@ -78,7 +93,6 @@ function NavBar() {
                 </NavLink>
               </li>
 
-              {/* Private Links */}
               {user && (
                 <>
                   <li>
@@ -94,7 +108,6 @@ function NavBar() {
                 </>
               )}
 
-              {/* Auth Links */}
               {!user ? (
                 <>
                   <li>
@@ -112,7 +125,7 @@ function NavBar() {
                 <li>
                   <button
                     onClick={logout}
-                    className="lg:hidden font-semibold text-red-400 hover:border-red-600 mt-2 cursor-pointer"
+                    className="lg:hidden font-semibold text-red-400 hover:border-red-400 mt-2 cursor-pointer"
                   >
                     Logout
                   </button>
@@ -121,15 +134,49 @@ function NavBar() {
             </ul>
           </div>
 
-          {/* Logout button for large screens */}
           {user && (
-            <div className="hidden lg:flex items-center ml-3">
+            <div
+              className="hidden lg:flex items-center ml-3 relative"
+              ref={userMenuRef}
+            >
               <button
-                onClick={logout}
-                className="py-2 px-3 font-semibold text-red-400 border-b-2 border-transparent hover:border-red-600"
+                onClick={toggleUserMenu}
+                className="w-12 h-12 rounded-full overflow-hidden transition relative z-20 cursor-pointer"
+                aria-haspopup="true"
+                aria-expanded={isUserMenuOpen}
               >
-                Logout
+                <img
+                  src={user.photoURL || "/default-avatar.png"}
+                  alt="User Avatar"
+                  className="w-full h-full object-cover"
+                />
               </button>
+
+              <div
+                className={`
+        absolute right-0 mt-1 w-48 bg-neutral-900 border border-neutral-700 rounded-md shadow-lg z-30 py-2
+        transform transition-all duration-300 ease-in-out origin-top-right
+        ${
+          isUserMenuOpen
+            ? "opacity-100 scale-100 pointer-events-auto"
+            : "opacity-0 scale-95 pointer-events-none"
+        }
+      `}
+                style={{ top: "100%", marginTop: "0.25rem" }}
+              >
+                <p className="px-4 py-2 text-sm text-neutral-300 font-semibold truncate">
+                  {user.name || user.email}
+                </p>
+                <button
+                  onClick={() => {
+                    setIsUserMenuOpen(false);
+                    logout();
+                  }}
+                  className="w-full text-left px-4 py-2 text-sm text-red-400 hover:text-red-600 transition cursor-pointer"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           )}
         </div>
