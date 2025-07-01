@@ -38,17 +38,29 @@ function LoginPage() {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isEasyLogging, setIsEasyLogging] = useState(false);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   async function handleLogin(data) {
     setIsLoggingIn(true);
     const res = await login(data.email, data.password);
     setIsLoggingIn(false);
+    if (res.status === "success") navigate(state?.from || "/events");
+  }
+
+  async function handleEasyLogin(e) {
+    e.preventDefault();
+    setIsEasyLogging(true);
+    setValue("email", "admin@gmail.com");
+    setValue("password", "Pa$$word");
+    const res = await login("admin@gmail.com", "Pa$$word");
+    setIsEasyLogging(false);
     if (res.status === "success") navigate(state?.from || "/events");
   }
 
@@ -73,7 +85,6 @@ function LoginPage() {
         className="w-full space-y-4"
         onSubmit={handleSubmit(handleLogin)}
       >
-        {/* Email */}
         <motion.div variants={itemVariants} className="flex flex-col gap-1">
           <label htmlFor="email" className="font-semibold text-sm">
             Email
@@ -89,8 +100,10 @@ function LoginPage() {
           )}
         </motion.div>
 
-        {/* Password */}
-        <motion.div variants={itemVariants} className="flex flex-col gap-1 relative">
+        <motion.div
+          variants={itemVariants}
+          className="flex flex-col gap-1 relative"
+        >
           <label htmlFor="password" className="font-semibold text-sm">
             Password
           </label>
@@ -115,14 +128,22 @@ function LoginPage() {
           )}
         </motion.div>
 
-        {/* Submit Button */}
         <motion.button
           variants={itemVariants}
           type="submit"
-          className="w-full px-3 py-2 rounded-md bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50"
+          className="w-full px-3 py-2 rounded-md bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50 cursor-pointer"
           disabled={isLoggingIn}
         >
           {isLoggingIn ? "Logging in..." : "Login"}
+        </motion.button>
+        <motion.button
+          variants={itemVariants}
+          type="submit"
+          className="w-full px-3 py-2 rounded-md -mt-2 bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50 cursor-pointer"
+          disabled={isEasyLogging || isLoggingIn}
+          onClick={handleEasyLogin}
+        >
+          {isEasyLogging ? "Logging in..." : "Easy Login"}
         </motion.button>
       </motion.form>
 
