@@ -45,14 +45,14 @@ function MyEventCard({ event }) {
   }
 
   return (
-    <div className="bg-neutral-200 shadow-md p-4 w-full max-w-md border border-neutral-500 flex items-center justify-between flex-col">
+    <div className="bg-neutral-200 shadow-md p-4 w-full max-w-md border border-neutral-500 flex items-center justify-between flex-col cursor-default">
       <div className="w-full">
         <h3 className="text-xl font-semibold text-neutral-900">
           {event?.title}
         </h3>
         <p className="text-sm text-neutral-700 mt-1">{event?.description}</p>
         <p className="text-sm text-neutral-600 mt-1 font-medium">
-          📅 {new Date(event.dateTime).toLocaleDateString()} | ⏰{" "}
+          📅 {new Date(event.dateTime).toLocaleDateString("en-UK")} | ⏰{" "}
           {new Date(event.dateTime).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",

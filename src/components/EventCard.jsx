@@ -24,14 +24,16 @@ function EventCard({ event, refetch }) {
   const isJoined = event.joinedUsers?.includes(user._id);
 
   return (
-    <div className="bg-neutral-200 shadow-md p-4 w-full max-w-md border border-neutral-300 flex items-center justify-around flex-col">
+    <div className="bg-neutral-200 shadow-md p-4 w-full max-w-md border border-neutral-300 flex items-center justify-between flex-col">
       <div className="w-full">
         <h3 className="text-xl font-semibold text-neutral-900">
           {event?.title}
         </h3>
-        <p className="text-sm text-neutral-700 mt-1">{event?.description}</p>
+        <p className="text-sm text-neutral-700 mt-1 break-words">
+          {event?.description}
+        </p>
         <p className="text-sm text-neutral-600 mt-1 font-medium">
-          📅 {new Date(event.dateTime).toLocaleDateString()} | ⏰{" "}
+          📅 {new Date(event.dateTime).toLocaleDateString("en-UK")} | ⏰{" "}
           {new Date(event.dateTime).toLocaleTimeString([], {
             hour: "2-digit",
             minute: "2-digit",
@@ -51,7 +53,7 @@ function EventCard({ event, refetch }) {
 
       <button
         onClick={handleJoinEvent}
-        className="bg-neutral-950 font-semibold text-white px-4 py-2 mt-5 w-full hover:bg-primary/70 disabled:cursor-not-allowed disabled:bg-primary/50"
+        className="bg-neutral-950 font-semibold text-white px-4 py-2 mt-5 w-full hover:bg-primary/70 disabled:cursor-not-allowed disabled:bg-primary/50 cursor-pointer"
         disabled={isJoined | isJoining}
       >
         {isJoining ? "Joining..." : isJoined ? "Joined" : "Join"}

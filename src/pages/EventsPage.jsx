@@ -52,18 +52,20 @@ function EventsPage() {
             <label className="pr-3" htmlFor="searchEvent">
               <IoSearch size={20} />
             </label>
-
             <input
               id="searchEvent"
               type="text"
               className="flex-1 border border-primary px-2 py-1 focus:outline-primary focus:outline-1"
               placeholder="Search Events"
+              value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
+
           <div className="mt-3 lg:mt-0">
             <select
               className="border border-primary px-2 py-1 md text-inherit"
+              value={dateFilter}
               onChange={(e) => setDateFilter(e.target.value)}
             >
               <option value="all">All</option>
@@ -73,12 +75,28 @@ function EventsPage() {
               <option value="lastMonth">Last Month</option>
             </select>
           </div>
-          <button
-            className="bg-primary px-2 py-1 cursor-pointer"
-            onClick={refetch}
-          >
-            Search
-          </button>
+
+          <div className="flex gap-2 mt-3 lg:mt-0">
+            <button
+              className="bg-primary px-2 py-1 rounded-md text-white hover:bg-primary/80 transition"
+              onClick={refetch}
+            >
+              Search
+            </button>
+            <button
+              className="px-2 py-1 rounded-md text-white bg-black text-nowrap"
+              onClick={() => {
+                setSearchQuery("");
+                setDateFilter("all");
+                // because of reacts asynchronous nature
+                setTimeout(() => {
+                  refetch();
+                }, 0);
+              }}
+            >
+              Clear Filters
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4 w-full">

@@ -52,7 +52,7 @@ function SignupPage() {
     formState: { errors },
   } = useForm();
 
-  const { signup } = useAuth();
+  const { signup, login } = useAuth();
   const navigate = useNavigate();
   const { state } = useLocation();
 
@@ -71,7 +71,10 @@ function SignupPage() {
     );
     setIsSigningUp(false);
 
-    if (res.status === "success") navigate(state?.from || "/events");
+    if (res.status === "success") {
+      const loginRes = await login(data.email, data.password);
+      if (loginRes.status === "success") navigate(state?.from || "/events");
+    }
   }
 
   return (
@@ -178,7 +181,7 @@ function SignupPage() {
         <motion.button
           variants={itemVariants}
           type="submit"
-          className="w-full px-3 py-2 rounded-md bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50"
+          className="w-full px-3 py-2 rounded-md bg-neutral-900 text-neutral-300 font-semibold hover:bg-neutral-700 transition-all duration-200 my-5 disabled:opacity-50 cursor-pointer"
           disabled={isSigningUp}
         >
           {isSigningUp ? "Signing up..." : "Sign Up"}
